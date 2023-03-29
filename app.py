@@ -67,3 +67,9 @@ def create_account():
 @app.route('/major')
 def major():
     return render_template('major.html')
+
+
+# Genreal page for all users to see
+@app.route('/general')
+def general():
+    return render_template('general.html')

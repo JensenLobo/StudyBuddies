@@ -1,0 +1,9 @@
+.right{
+    float: right;
+}
+h1 img {
+    float:left;margin:0 5px 0 0
+}
+.indent{
+    text-indent: 25px;
+}

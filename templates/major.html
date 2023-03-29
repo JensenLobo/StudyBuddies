@@ -1,0 +1,45 @@
+{% extends '_layout.html' %}
+{% block title %}Major{% endblock %}
+{% block body %}
+
+<head>
+    <title>Major</title>
+    <!-- Add Bootstrap stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Area of Study</h1>
+        
+        <img src="static\images\area-of-study.jpg" alt="different paths">
+
+        <form class="mt-5" method="POST" action="{{ url_for('major') }}">
+            <div class="form-group">
+                <label for="username" class="my-label">Major:</label>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="majorDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select your major
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="majorDropdown">
+                    <a class="dropdown-item" href="#">Computer Science</a>
+                    <a class="dropdown-item" href="#">Mathematics</a>
+                    <a class="dropdown-item" href="#">Engineering</a>
+                    <a class="dropdown-item" href="#">Business</a>
+                  </div>
+                </div>
+            </div>
+                    
+        
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </form>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    </div>
+    <!-- Add Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+{% endblock %}

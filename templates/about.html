@@ -1,0 +1,12 @@
+{% extends '_layout.html' %}
+{% block title %}Home Page{% endblock %} 
+{% block body %} 
+<h1><img src="/static/images/StudyBuddues.png" alt="HTML5 Icon" style="width:200px;height:128px;" class ='right'>Welcome to Study Buddies!</h1>
+<br>
+<h3>Our Mission</h3>
+<p class="indent">At Study Buddies, we offer students the chance to connect with individuals in their respective fields of study to access academic support from their peers. This platform was founded by students, with the goal of providing a valuable resource for other students. Additionally, we provide a general community where students can engage with peers in different majors, fostering new connections and friendships.</p>
+<h4>Advantages</h4>
+<p class="indent">Study Buddies is an easy way to make connections in a community where everyone goes to the same college. IT'S FREE!! Everyone loves FREE websites so there's no reason not to sign up!</p>
+<h4>Join Us Today!</h4>
+<a href="{{ url_for('signup') }}" class="btn btn-success">Sign Up!</a>
+{% endblock %}

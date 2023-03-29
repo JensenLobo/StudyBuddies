@@ -11,6 +11,11 @@ def hash_password(password):
 def index():
     return render_template('home.html')
 
+# Genreal page for all users to see
+@app.route('/general')
+def general():
+    return render_template('general.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -63,3 +68,8 @@ def create_account():
         # Set the session and redirect to the home page
         session['username'] = username
         return redirect(url_for('home.html'))
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

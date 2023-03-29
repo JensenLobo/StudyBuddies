@@ -9,7 +9,7 @@ def hash_password(password):
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+    return render_template('about.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -62,4 +62,4 @@ def create_account():
 
         # Set the session and redirect to the home page
         session['username'] = username
-        return redirect(url_for('home.html'))
+        return redirect(url_for('about.html'))

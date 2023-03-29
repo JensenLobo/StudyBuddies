@@ -63,3 +63,7 @@ def create_account():
         # Set the session and redirect to the home page
         session['username'] = username
         return redirect(url_for('about.html'))
+
+@app.route('/major')
+def major():
+    return render_template('major.html')

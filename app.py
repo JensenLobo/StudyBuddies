@@ -75,10 +75,25 @@ def create_account():
          # Validate the password (for example, you might require a certain length or complexity)
         if len(password) < 8:
             return render_template('signup.html', error='Password should be at least 8 characters long')
-        return account_repository_singleton.create_account(username.lower(), password)
+        result = account_repository_singleton.create_account(username.lower(), password)
+        if result == False:
+            return render_template('signup.html', error='Username is already in use')
+
+        return redirect(url_for('getProfile', user_id = result))
 
 
         
+
+@app.get("/profile")
+def getProfile():
+    return render_template("creatingProfile.html")
+
+@app.post("/profile")
+def settingProfile():
+   user_major = request.form.get('major')
+   user_id = request.form.get('user_id')
+   account_repository_singleton.updatingMajor(user_id, user_major)
+   return redirect("/")
 
 
 @app.route('/major')

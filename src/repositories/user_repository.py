@@ -6,8 +6,8 @@ from src.models import db, users
 
 
 class AccountRepository:
- def updatingMajor(self, user_id, major):
-   users.query.filter_by(id = user_id).update({"major": major})
+ def updatingMajor(self, user_id, major, first_name, last_name):
+   users.query.filter_by(id = user_id).update(dict(major=major, first_name=first_name, last_name=last_name))
    db.session.commit()
     
  def create_account(self, username, password_hash):

@@ -1,15 +1,12 @@
 {% extends '_layout.html' %}
 
 {% block body %}
+<img src="/static/images/StudyBuddues.png" alt="HTML5 Icon" style="width:200px;height:128px;" class="top">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h1>Sign up</h1>
-            {% if error %}
-                <div class="alert alert-danger">
-                    {{ error }}
-                </div>
-            {% endif %}
-            <form method="POST" action="{{ url_for('signup') }}">
+            <div class="text-center">
+            <h1 style="margin-bottom: 5%">Sign up</h1>
+            <form class="w-50 mx-auto" method="POST" action="{{ url_for('create_account') }}">
                 <div class="form-group">
                     <label for="username">Username:</label>
                     <input type="text" class="form-control" name="username" required>
@@ -25,5 +22,17 @@
                 <button type="submit" class="btn btn-primary">Sign up</button>
             </form>
         </div>
-    </div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="text-center" style="margin-top: 16%">
+                <p>Welcome to our Study Buddies app! We're excited to have you join us. Our platform is designed to help you connect with like-minded students who share your interests and goals. By signing up, you'll have access to a community of students who can offer support, accountability, and new perspectives as you work towards your educational objectives. Whether you're looking to study for an upcoming exam, learn a new skill, or simply connect with others who are passionate about learning, our Study Buddies app has something for you. Join now and start exploring all the opportunities available to you!</p>
+        </div>
+        </div>
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+           
+        </div>
 {% endblock %}

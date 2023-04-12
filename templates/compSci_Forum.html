@@ -1,0 +1,79 @@
+{% extends '_layout.html' %}
+{% block title %}Computer Science Forum{% endblock %}
+
+{% block body %}
+<h1>Computer Science Discussion Page</h1>
+{% for post in forums %}
+<div class="container-fluid mt-100">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <div class="media-body ml-3"> <a>Placeholder for User name</a>
+                        </div>
+                </div>
+                <div class="card-body">
+                    <p name="display-text"> Placeholder for message from textarea
+                    </p>
+                </div>
+                <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
+                    <div class="px-4 pt-3"> <button type="button" class="btn btn-info">Like</button>
+                        <button type="button" class="btn btn-info">Dislike</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor%}
+
+<style>
+    form {
+      background-color: #f2f2f2;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      bottom: 0;
+      position: fixed;
+      width: 77%;
+      height: 200px;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      resize: none;
+    }
+    
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    ul {
+      position: relative;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    li {
+      margin-bottom: 10px;
+    }
+</style>
+
+<ul id="question-list"></ul>
+<form id="question-form">
+    <label for="question-input">Enter your question:</label>
+    <textarea id="question-input" name="question-input"></textarea>
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

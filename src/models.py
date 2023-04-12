@@ -24,5 +24,9 @@ class users(db.Model):
     def user_info(self) -> str:
         return f'<Account ID: {self.id}, Username: {self.username}'
 
-
+class CompSci(db.Model):
+    post_id = db.Column(db.Integer, primary_key=True)
+    forum_message = db.Column(db.String(255), nullable=False)
+    message_likes = db.Column(db.Integer)
+    major_id = db.Column(db.String(255))
 

@@ -108,3 +108,13 @@ def major():
 @app.route('/general')
 def general():
     return render_template('general.html')
+
+@app.get('/ComputerScience')
+def compSci():
+    return render_template('compSci_Forum.html')
+
+@app.post('/ComputerScience')
+def display():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect('compSci_Forum.html')

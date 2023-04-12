@@ -8,6 +8,9 @@ class users(db.Model):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     major = db.Column(db.String(255), default="No major", nullable=True)
+    first_name = db.Column(db.String(255), default="No first", nullable=True)
+    last_name = db.Column(db.String(255), default="No last", nullable=True)
+
 
     def __init__(self, username, password_hash):
         self.username = username

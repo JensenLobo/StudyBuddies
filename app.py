@@ -92,9 +92,12 @@ def getProfile():
 def settingProfile():
    user_major = request.form.get('major')
    user_id = request.form.get('user_id')
-   account_repository_singleton.updatingMajor(user_id, user_major)
-   return redirect("/")
-
+   first_name = request.form.get('first_name')
+   last_name = request.form.get('last_name')
+   account_repository_singleton.updatingMajor(user_id, user_major, first_name, last_name)
+#    return redirect("/")
+   return render_template("profileIndex.html")
+   
 
 @app.route('/major')
 def major():

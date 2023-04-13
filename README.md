@@ -1,1 +1,1 @@
-# StudyBuddies
+# StudyBuddies group application

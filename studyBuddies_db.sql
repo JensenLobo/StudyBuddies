@@ -1,4 +1,4 @@
-CREATE DATABASE studybuddies;
+CREATE DATABASE study_buddies;
 -- This table holds all the characteristics for the user. All the user's information is stored.
 CREATE TABLE users (
         id SERIAL PRIMARY KEY,

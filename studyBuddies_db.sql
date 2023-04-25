@@ -1,4 +1,4 @@
-CREATE DATABASE studybuddies;
+CREATE DATABASE study_buddies;
 -- This table holds all the characteristics for the user. All the user's information is stored.
 CREATE TABLE users (
         id SERIAL PRIMARY KEY,
@@ -9,7 +9,6 @@ CREATE TABLE users (
         last_name VARCHAR(255)  DEFAULT 'No last'
     );
 
--- This is a table for the computer science major. 
 CREATE TABLE compSci (
         post_id INTEGER PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
@@ -24,3 +23,25 @@ CREATE TABLE post (
         user_id INTEGER REFERENCES users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
+
+-- This is the table for the Biology majors
+CREATE TABLE biology (
+        post_id INTEGER PRIMARY KEY,
+        forum_message VARCHAR(255) NOT NULL,
+        message_likes INTEGER,
+        major_id VARCHAR(255)
+    )
+-- This is the table for the Business majors
+CREATE TABLE business (
+        post_id INTEGER PRIMARY KEY,
+        forum_message VARCHAR(255) NOT NULL,
+        message_likes INTEGER,
+        major_id VARCHAR(255)
+    )
+-- This is the table for the Engineering majors
+CREATE TABLE engineering (
+        post_id INTEGER PRIMARY KEY,
+        forum_message VARCHAR(255) NOT NULL,
+        message_likes INTEGER,
+        major_id VARCHAR(255)
+    )

@@ -1,4 +1,4 @@
-.right{
+  .right{
     float: right;
 }
 h1 img {
@@ -24,4 +24,19 @@ img {
 
 .my-label {
     font-family: 50px;
+}
+
+/* Layout has been adjusted for screens */
+@media screen and (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+  }
+  
+/* Layout has been adjusted for screens */
+@media screen and (min-height: 800px) {
+    .container {
+        margin-top: 120px;
+    }
 }

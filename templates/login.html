@@ -11,7 +11,7 @@
   {% if error %}
   <p class="text-danger">{{ error }}</p>
   {% endif %}
-  <form class="w-50 mx-auto" method="POST" action="{{ url_for('login') }}">
+  <form class="w-50 mx-auto" method="POST" action="{{ url_for('authentication') }}">
     <div class="form-group">
       <label for="username">Username:</label>
       <input type="text" class="form-control" id="username" name="username">

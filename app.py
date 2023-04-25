@@ -118,3 +118,7 @@ def display():
     message = request.form.get('question-input')
     account_repository_singleton.add_post(message)
     return redirect('compSci_Forum.html')
+
+@app.route('/authentication', methods=['POST'])
+def authentication():
+    return render_template('authentication.html')

@@ -132,42 +132,6 @@ def submit():
     account_repository_singleton.add_post(message)
     return redirect(url_for('business_forum'))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/business_Forum' , methods=['GET', 'POST'])
 def business_forum():
     if request.method == 'POST':

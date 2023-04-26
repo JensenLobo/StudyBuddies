@@ -128,9 +128,3 @@ def authentication():
 
 
 
-@app.route('/submit', methods=['GET', 'POST'])
-def submit():
-    message = request.form.get('question-input')
-    account_repository_singleton.add_post(message)
-    return redirect(url_for('business_forum'))
-

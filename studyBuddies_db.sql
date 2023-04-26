@@ -19,8 +19,10 @@ CREATE TABLE compSci (
 -- Table for general form page
 CREATE TABLE post (
         id SERIAL PRIMARY KEY,
+        user_name varchar(255),
         content TEXT,
         user_id INTEGER REFERENCES users(id),
+        message_likes INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 

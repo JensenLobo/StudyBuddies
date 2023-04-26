@@ -131,3 +131,24 @@ def authentication():
 @app.route('/business_Forum')
 def business_forum():
     return render_template('business_Forum.html')
+
+
+
+
+
+
+
+
+
+
+# Engineering Forum 
+@app.route('/engineering_forum')
+def engineering_forum():
+    return render_template('engineering_forum.html')
+
+@app.post('/engineering_forum')
+def engineering_post():
+    message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
+    account_repository_singleton.add_post(message)
+    return render_template('engineering_forum.html')

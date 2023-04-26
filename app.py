@@ -126,6 +126,8 @@ def display():
 def authentication():
     return render_template('authentication.html')
 
+
+
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     message = request.form.get('question-input')

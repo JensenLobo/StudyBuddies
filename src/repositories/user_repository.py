@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 #from your_database_module import db, User
 from werkzeug.security import generate_password_hash
-from src.models import db, users, CompSci
+from src.models import db, users, compsci_forum
 
 
 class AccountRepository:
@@ -37,10 +37,14 @@ class AccountRepository:
  def get_user_id():
         return users.id
  
- def add_post(fourm_message):
-    post = CompSci(fourm_message)
+ def add_post(self, forum_message):
+    post = compsci_forum(forum_message)
     db.session.add(post)
     db.session.commit()
+    return post.post_id
+ 
+ def get_comp_id():
+      return compsci_forum.post_id
 
 
  

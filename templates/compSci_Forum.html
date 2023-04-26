@@ -64,16 +64,14 @@
       margin: 0;
     }
     
-    li {
-      margin-bottom: 10px;
-    }
 </style>
 
 <ul id="question-list"></ul>
-<form id="question-form">
-    <label for="question-input">Enter your question:</label>
-    <textarea id="question-input" name="question-input"></textarea>
-    <button type="submit">Submit</button>
+<form id="question-form" method="post" action="{{ url_for('display') }}">
+  <label for="question-input">Enter your question:</label>
+  <textarea type="text" name="question-input"></textarea>
+  <button type="submit">Submit</button>
 </form>
+
 
 {% endblock %}

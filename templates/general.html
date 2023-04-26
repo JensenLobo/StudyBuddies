@@ -1,10 +1,6 @@
 {% extends '_layout.html' %}
 {% block title %}General{% endblock %}
 
-<!-- {% block head %}
-<link rel="stylesheet" href="static/general.css">
-{% endblock %} -->
-
 {% block body %}
 <style>
     form {
@@ -42,10 +38,7 @@
       padding: 0;
       margin: 0;
     }
-    
-    li {
-      margin-bottom: 10px;
-    }
+
 </style>
 
 <h1>General Discussion Page</h1>
@@ -56,44 +49,5 @@
     <textarea id="question-input"></textarea>
     <button type="submit">Submit</button>
 </form>
-<script>
-    const questionForm = document.querySelector("#question-form");
-    const questionInput = document.querySelector("#question-input");
-    const questionList = document.querySelector("#question-list");
-
-    // Retrieve previously asked questions from local storage
-    let questions = JSON.parse(localStorage.getItem("questions")) || [];
-
-    // Render previously asked questions on the page
-    function renderQuestions() {
-        questionList.innerHTML = "";
-        questions.forEach((question) => {
-            const li = document.createElement("li");
-            li.textContent = question;
-            questionList.appendChild(li);
-        });
-    }
-
-    // Handle submission of new questions
-    questionForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (questionInput.value.trim() !== "") {
-            questions.push(questionInput.value.trim());
-            localStorage.setItem("questions", JSON.stringify(questions));
-            renderQuestions();
-            questionInput.value = "";
-        }
-    });
-
-    questionInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        submitQuestion();
-      }
-    });
-
-    // Render previously asked questions when the page loads
-    renderQuestions();
-</script>
 
 {% endblock %}

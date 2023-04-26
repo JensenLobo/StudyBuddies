@@ -128,3 +128,6 @@ def authentication():
 
 
 
+@app.route('/business_Forum')
+def business_forum():
+    return render_template('business_Forum.html')

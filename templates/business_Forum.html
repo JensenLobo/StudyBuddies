@@ -42,6 +42,7 @@
     .container{
         margin-left: 0;
         margin-top: 75px;
+        margin-bottom: 20px;
 
     }
 
@@ -52,23 +53,42 @@
     h1{
         color: white;
     }
+
+    h2{
+        color: white;
+    }
+
+    li{
+        color: white;
+    }
+
+    p{
+        color: white;
+    }
       
+    
 </style>
-    <h1>Business Discussion Page</h1>
-        <div class="container">
-            <ul>
-                {% for post in posts %}
-                <li>{{ post.content }}</li>
-                {% endfor %}
-            </ul>
-            <form action="/submit_post" method="POST">
-                <div class="form-group">
-                    <label for="post_content">Post:</label>
-                    <input type="text" class="form-control" id="post_content" name="post_content">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>            
-        
-        </div>
+    <div class="container">
+        <h1>Business Discussion Page</h1>
+          <br>
+        <h2>Questions</h2>
+        <ul>
+        {% for post in posts %}
+            <div>
+                <p>{{ post }}</p>
+            </div>
+        {% endfor %}
+        </ul>
+        <form method="POST" action="{{ url_for('business_forum') }}">
+
+            <div class="form-group">
+                <br>
+              <label for="question-input">Ask a Question:</label>
+              <textarea class="form-control" id="question-input" name="question-input" rows="3" required></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </form>
+    </div>
 
 {% endblock %}

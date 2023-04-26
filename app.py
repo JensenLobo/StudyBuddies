@@ -109,6 +109,12 @@ def major():
 def general():
     return render_template('general.html')
 
+@app.post('/general')
+def general_post():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect('general.html')
+
 @app.get('/ComputerScience')
 def compSci():
     return render_template('compSci_Forum.html')
@@ -118,3 +124,13 @@ def display():
     message = request.form.get('question-input')
     account_repository_singleton.add_post(message)
     return redirect('compSci_Forum.html')
+
+@app.get('/engineer_forum')
+def engineers():
+    return render_template('engineer_forum.html')
+
+@app.post('/engineer_forum')
+def engineer_post():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect('engineer_forum.html')

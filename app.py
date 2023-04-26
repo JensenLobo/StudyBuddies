@@ -111,13 +111,16 @@ def general():
 
 @app.get('/ComputerScience')
 def compSci():
+    print('testing')
     return render_template('compSci_Forum.html')
+
 
 @app.post('/ComputerScience')
 def display():
     message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
     account_repository_singleton.add_post(message)
-    return redirect('compSci_Forum.html')
+    return render_template('compSci_Forum.html')
 
 @app.route('/authentication', methods=['POST'])
 def authentication():

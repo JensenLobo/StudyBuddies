@@ -1,0 +1,74 @@
+{% extends '_layout.html' %}
+{% block title %}Business{% endblock %}
+
+
+{% block body %}
+<style>
+
+    html, body {
+        height: 100%;
+    }
+    
+    body {        
+        background-image: url("static/images/unccCampus2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        background-repeat: no-repeat;
+        
+    
+    }
+
+    /*background-image{
+    opacity: 0.5;
+    z-index: -1;
+    
+    }*/
+
+    .form-group{
+        font-size: 21px;
+        color: white;
+        font-family: Arial, sans-serif;
+
+    }
+
+    .title{
+        color: white;
+        text-align: left;
+        padding-left: 20px;
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
+
+    .container{
+        margin-left: 0;
+        margin-top: 75px;
+
+    }
+
+    input.form-control {
+        width: 60%;
+    }
+
+    h1{
+        color: white;
+    }
+      
+</style>
+    <h1>Business Discussion Page</h1>
+        <div class="container">
+            <ul>
+                {% for post in posts %}
+                <li>{{ post.content }}</li>
+                {% endfor %}
+            </ul>
+            <form action="/submit_post" method="POST">
+                <div class="form-group">
+                    <label for="post_content">Post:</label>
+                    <input type="text" class="form-control" id="post_content" name="post_content">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>            
+        
+        </div>
+
+{% endblock %}

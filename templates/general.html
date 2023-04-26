@@ -1,99 +1,55 @@
 {% extends '_layout.html' %}
 {% block title %}General{% endblock %}
 
-<!-- {% block head %}
-<link rel="stylesheet" href="static/general.css">
-{% endblock %} -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
 
 {% block body %}
 <style>
-    form {
-      background-color: #f2f2f2;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      bottom: 0;
-      position: fixed;
-      width: 77%;
-      height: 200px;
-    }
-    
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      resize: none;
-    }
-    
-    button {
-      background-color: #4caf50;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    
-    ul {
-      position: relative;
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    li {
-      margin-bottom: 10px;
-    }
+  form {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    bottom: 0;
+    position: fixed;
+    width: 77%;
+    height: 200px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    resize: none;
+  }
+
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  ul {
+    position: relative;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
 </style>
 
 <h1>General Discussion Page</h1>
 
 <ul id="question-list"></ul>
 <form id="question-form">
-    <label for="question-input">Enter your question:</label>
-    <textarea id="question-input"></textarea>
-    <button type="submit">Submit</button>
+  <label for="question-input">Enter your question:</label>
+  <textarea id="question-input"></textarea>
+  <button type="submit">Submit</button>
 </form>
-<script>
-    const questionForm = document.querySelector("#question-form");
-    const questionInput = document.querySelector("#question-input");
-    const questionList = document.querySelector("#question-list");
-
-    // Retrieve previously asked questions from local storage
-    let questions = JSON.parse(localStorage.getItem("questions")) || [];
-
-    // Render previously asked questions on the page
-    function renderQuestions() {
-        questionList.innerHTML = "";
-        questions.forEach((question) => {
-            const li = document.createElement("li");
-            li.textContent = question;
-            questionList.appendChild(li);
-        });
-    }
-
-    // Handle submission of new questions
-    questionForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (questionInput.value.trim() !== "") {
-            questions.push(questionInput.value.trim());
-            localStorage.setItem("questions", JSON.stringify(questions));
-            renderQuestions();
-            questionInput.value = "";
-        }
-    });
-
-    questionInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        submitQuestion();
-      }
-    });
-
-    // Render previously asked questions when the page loads
-    renderQuestions();
-</script>
 
 {% endblock %}

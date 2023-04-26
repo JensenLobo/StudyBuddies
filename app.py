@@ -128,7 +128,20 @@ def authentication():
 
 
 
-@app.route('/business_Forum')
+@app.route('/business_Forum', methods=['GET', 'POST'])
 def business_forum():
-    return render_template('business_Forum.html')
+    if request.method == 'POST':
+        message = request.form['question-input']
+        account_repository_singleton.add_post(message)
+        return redirect(url_for('business_forum'))
+    else:
+        posts = set(account_repository_singleton.get_posts())
+    return render_template('business_Forum.html', posts=posts)
+
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect(url_for('business_forum'))
+
 

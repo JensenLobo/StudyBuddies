@@ -103,7 +103,6 @@ def settingProfile():
 def major():
     return render_template('major.html')
 
-
 # Genreal page for all users to see
 @app.route('/general')
 def general():
@@ -113,7 +112,6 @@ def general():
 def compSci():
     print('testing')
     return render_template('compSci_Forum.html')
-
 
 @app.post('/ComputerScience')
 def display():
@@ -126,8 +124,19 @@ def display():
 def authentication():
     return render_template('authentication.html')
 
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect(url_for('business_forum'))
 
-
-@app.route('/business_Forum')
+@app.route('/business_Forum' , methods=['GET', 'POST'])
 def business_forum():
-    return render_template('business_Forum.html')
+    if request.method == 'POST':
+        message = request.form['question-input']
+        account_repository_singleton.add_post(message)
+        return redirect(url_for('business_forum'))
+
+    else:
+        posts = set(account_repository_singleton.get_posts())
+    return render_template('business_forum.html', posts=posts)

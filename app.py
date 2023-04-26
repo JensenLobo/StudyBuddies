@@ -126,3 +126,16 @@ def display():
 def authentication():
     return render_template('authentication.html')
 
+@app.route('/business_Forum')
+def business_forum():
+    return render_template('business_Forum.html')
+
+@app.get('/engineer_forum')
+def engineers():
+    return render_template('engineer_forum.html')
+
+@app.post('/engineer_forum')
+def engineer_post():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect('engineer_forum.html')

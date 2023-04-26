@@ -125,3 +125,9 @@ def display():
 @app.route('/authentication', methods=['POST'])
 def authentication():
     return render_template('authentication.html')
+
+
+
+@app.route('/business_Forum')
+def business_forum():
+    return render_template('business_Forum.html')

@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash
 from src.models import db, users
 from src.repositories.user_repository import account_repository_singleton
+from src.security import bcrypt
 from dotenv import load_dotenv
 import os
 
@@ -19,8 +20,9 @@ db_name = os.getenv('DB_NAME')
 app.config['SQLALCHEMY_DATABASE_URI'] = \
       f'postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = os.getenv('KEY')
+app.secret_key = os.getenv('KEY')
 db.init_app(app)
+bcrypt.init_app(app)
 
 def hash_password(password):
     return generate_password_hash(password)
@@ -30,6 +32,15 @@ def index():
     return render_template('about.html')
 
 
+@app.get('/profileIndex')
+def profileIndex():
+    if 'user' not in session:
+        return render_template('about.html')
+    return render_template('profileIndex.html')
+
+     
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -37,24 +48,23 @@ def login():
         password = request.form['password']
 
          # Check if the username is already in use
+        if not username or not password:
+         return render_template('login.html', error= "Invalid username or password")
         existing_user = users.query.filter_by(username=username).first()
-        db_password = users.query.filter_by(password_hash=password).first()
-        if (existing_user != None) and (db_password != None):
-        
-            if username == users.query.filter_by(username=username).first().username and password == users.query.filter_by(password_hash=password).first().password_hash:
-                session['username'] = username
-                return redirect(url_for('index'))
-            else:
-                return render_template('login.html', error='Password is wrong')
-        else:
-            return render_template('login.html', error='Invalid username or password')
+        if not existing_user:
+            return render_template('/login.html', error = "Invalid Username")
+        if not bcrypt.check_password_hash(existing_user.password_hash, password):
+            return render_template('/login.html', error = "Wrong password")
+        session['user'] = {
+            'username': username
+        }
+        return redirect('/profileIndex')
 
     else:
         return render_template('login.html')
 
 @app.get('/signup')
 def signup():
-    print("wogh")
     return render_template('signup.html')
 
 
@@ -75,7 +85,8 @@ def create_account():
          # Validate the password (for example, you might require a certain length or complexity)
         if len(password) < 8:
             return render_template('signup.html', error='Password should be at least 8 characters long')
-        result = account_repository_singleton.create_account(username.lower(), password)
+        hashed_password = bcrypt.generate_password_hash(password).decode()
+        result = account_repository_singleton.create_account(username.lower(), hashed_password)
         if result == False:
             return render_template('signup.html', error='Username is already in use')
 

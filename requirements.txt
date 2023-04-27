@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 blinker==1.6.2
+=======
+<<<<<<< HEAD
+bcrypt==4.0.1
+=======
+>>>>>>> 71c807685ca252bff78021e4839e67697da1a50d
 certifi==2022.12.7
 charset-normalizer==3.1.0
+>>>>>>> 75236e9cc591ef9c300917d0950feb2ae01c0b9a
 click==8.1.3
+<<<<<<< HEAD
 colorama==0.4.6
 Flask==2.3.1
+=======
+Flask==2.2.3
+Flask-Bcrypt==1.0.1
+>>>>>>> 71c807685ca252bff78021e4839e67697da1a50d
 Flask-SQLAlchemy==3.0.3
 greenlet==2.0.2
 idna==3.4

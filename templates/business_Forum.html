@@ -1,0 +1,94 @@
+{% extends '_layout.html' %}
+{% block title %}Business{% endblock %}
+
+
+{% block body %}
+<style>
+
+    html, body {
+        height: 100%;
+    }
+    
+    body {        
+        background-image: url("static/images/unccCampus2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        background-repeat: no-repeat;
+        
+    
+    }
+
+    /*background-image{
+    opacity: 0.5;
+    z-index: -1;
+    
+    }*/
+
+    .form-group{
+        font-size: 21px;
+        color: white;
+        font-family: Arial, sans-serif;
+
+    }
+
+    .title{
+        color: white;
+        text-align: left;
+        padding-left: 20px;
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
+
+    .container{
+        margin-left: 0;
+        margin-top: 75px;
+        margin-bottom: 20px;
+
+    }
+
+    input.form-control {
+        width: 60%;
+    }
+
+    h1{
+        color: white;
+    }
+
+    h2{
+        color: white;
+    }
+
+    li{
+        color: white;
+    }
+
+    p{
+        color: white;
+    }
+      
+    
+</style>
+    <div class="container">
+        <h1>Business Discussion Page</h1>
+          <br>
+        <h2>Questions</h2>
+        <ul>
+        {% for post in posts %}
+            <div>
+                <p>{{ post }}</p>
+            </div>
+        {% endfor %}
+        </ul>
+        <form method="POST" action="{{ url_for('business_forum') }}">
+
+            <div class="form-group">
+                <br>
+              <label for="question-input">Ask a Question:</label>
+              <textarea class="form-control" id="question-input" name="question-input" rows="3" required></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Post</button>
+          </form>
+    </div>
+
+{% endblock %}

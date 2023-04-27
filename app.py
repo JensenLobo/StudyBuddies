@@ -122,10 +122,37 @@ def general():
 
 @app.get('/ComputerScience')
 def compSci():
+    print('testing')
     return render_template('compSci_Forum.html')
+
 
 @app.post('/ComputerScience')
 def display():
     message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
     account_repository_singleton.add_post(message)
-    return redirect('compSci_Forum.html')
+    return render_template('compSci_Forum.html')
+
+@app.route('/authentication', methods=['POST'])
+def authentication():
+    return render_template('authentication.html')
+
+
+
+@app.route('/business_Forum', methods=['GET', 'POST'])
+def business_forum():
+    if request.method == 'POST':
+        message = request.form['question-input']
+        account_repository_singleton.add_post(message)
+        return redirect(url_for('business_forum'))
+    else:
+        posts = set(account_repository_singleton.get_posts())
+    return render_template('business_Forum.html', posts=posts)
+
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+    message = request.form.get('question-input')
+    account_repository_singleton.add_post(message)
+    return redirect(url_for('business_forum'))
+
+

@@ -1,0 +1,66 @@
+{% extends '_layout.html' %}
+{% block title %}Authentication{% endblock %}
+
+
+{% block body %}
+<style>
+
+    html, body {
+        height: 100%;
+    }
+    
+    body {        
+        background-image: url("static/images/unccCampus2.jpg");
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        background-repeat: no-repeat;
+        
+    
+    }
+
+    /*background-image{
+    opacity: 0.5;
+    z-index: -1;
+    
+    }*/
+
+    .form-group{
+        font-size: 21px;
+        color: white;
+        font-family: Arial, sans-serif;
+
+    }
+
+    .title{
+        color: white;
+        text-align: left;
+        padding-left: 20px;
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
+
+    .container{
+        margin-left: 0;
+        margin-top: 75px;
+
+    }
+
+    input.form-control {
+        width: 60%;
+    }
+      
+</style>
+    <h1 class="title">Verification</h1>
+
+        <div class="container">
+                <div class="form-group">
+                    <br>
+                    <label for="student">Please enter your student ID: </label>
+                    <input type="text" placeholder="800# or 801#" class="form-control" id="student" name="student">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+
+{% endblock %}

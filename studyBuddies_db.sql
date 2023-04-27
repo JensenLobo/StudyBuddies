@@ -32,18 +32,18 @@ CREATE TABLE biology (
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
-    )
+    );
 -- This is the table for the Business majors
 CREATE TABLE business (
         post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
-    )
+    );
 -- This is the table for the Engineering majors
 CREATE TABLE engineering (
         post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
-    )
+    );

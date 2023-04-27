@@ -10,7 +10,7 @@ CREATE TABLE users (
     );
 
 CREATE TABLE compSci (
-        post_id INTEGER PRIMARY KEY,
+        post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
@@ -19,28 +19,30 @@ CREATE TABLE compSci (
 -- Table for general form page
 CREATE TABLE post (
         id SERIAL PRIMARY KEY,
+        user_name varchar(255),
         content TEXT,
         user_id INTEGER REFERENCES users(id),
+        message_likes INTEGER,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 
 -- This is the table for the Biology majors
 CREATE TABLE biology (
-        post_id INTEGER PRIMARY KEY,
+        post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
     );
 -- This is the table for the Business majors
 CREATE TABLE business (
-        post_id INTEGER PRIMARY KEY,
+        post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)
     );
 -- This is the table for the Engineering majors
 CREATE TABLE engineering (
-        post_id INTEGER PRIMARY KEY,
+        post_id SERIAL PRIMARY KEY,
         forum_message VARCHAR(255) NOT NULL,
         message_likes INTEGER,
         major_id VARCHAR(255)

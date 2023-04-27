@@ -24,9 +24,19 @@ class users(db.Model):
     def user_info(self) -> str:
         return f'<Account ID: {self.id}, Username: {self.username}'
 
-class CompSci(db.Model):
+class compsci_forum(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     forum_message = db.Column(db.String(255), nullable=False)
-    message_likes = db.Column(db.Integer)
-    major_id = db.Column(db.String(255))
+    message_likes = db.Column(db.Integer, nullable=True)
+    major_id = db.Column(db.String(255), nullable=True)
 
+
+    def __init__(self, forum_message):
+        self.forum_message = forum_message
+
+
+    def __repr__(self):
+        return self
+   
+    def post_info(self) -> str:
+        return f'Post ID: {self.post_id}, Post Statement: {self.forum_message}'

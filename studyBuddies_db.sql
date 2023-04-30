@@ -9,12 +9,16 @@ CREATE TABLE users (
         last_name VARCHAR(255)  DEFAULT 'No last'
     );
 
-CREATE TABLE compSci (
-        post_id SERIAL PRIMARY KEY,
-        forum_message VARCHAR(255) NOT NULL,
-        message_likes INTEGER,
-        major_id VARCHAR(255)
-    );
+CREATE TABLE compsci (
+    post_id SERIAL PRIMARY KEY,
+    username VARCHAR(255)  NOT NULL,
+    forum_message VARCHAR(255) NOT NULL,
+    message_likes INTEGER DEFAULT 0,
+    message_dislikes INTEGER DEFAULT 0,
+    likelist VARCHAR(255)[],
+    dislikelist VARCHAR(255)[]
+);
+
 
 -- Table for general form page
 CREATE TABLE post (

@@ -6,7 +6,7 @@ from src.repositories.user_repository import account_repository_singleton
 from src.security import bcrypt
 from dotenv import load_dotenv
 import os
-
+import functools
 load_dotenv()
 app = Flask(__name__)
 
@@ -24,6 +24,15 @@ app.secret_key = os.getenv('KEY')
 db.init_app(app)
 bcrypt.init_app(app)
 
+def authentication(fun):
+  @functools.wraps(fun)
+  def wrapper(*args,**kwargs):
+       if 'user_id' in session:
+           return fun(*args,**kwargs)
+       
+       return redirect(url_for('index'))
+  return wrapper
+
 def hash_password(password):
     return generate_password_hash(password)
 
@@ -33,12 +42,12 @@ def index():
 
 
 @app.get('/profileIndex')
+@authentication
 def profileIndex():
-    if 'user' not in session:
-        return render_template('about.html')
-    return render_template('profileIndex.html')
+    user = account_repository_singleton.getUser(session['user_id'])
+    return render_template('profileIndex.html', user=user)
 
-     
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -55,9 +64,10 @@ def login():
             return render_template('/login.html', error = "Invalid Username")
         if not bcrypt.check_password_hash(existing_user.password_hash, password):
             return render_template('/login.html', error = "Wrong password")
-        session['user'] = {
-            'username': username
-        }
+       # user = account_repository_singleton.getUser(existing_user.id)
+
+       
+        session['user_id'] = existing_user.id
         return redirect('/profileIndex')
 
     else:
@@ -78,10 +88,11 @@ def create_account():
        # Check if the passwords match
         if password != confirm_password:
          return render_template('signup.html', error='Passwords do not match')
-
+        if username.lower().startswith('@uncc.edu'):
+            return render_template('signup.html', error='Username should not start with "@uncc.edu"')
     # Check if the username ends with "@uncc.edu"
         if not username.lower().endswith('@uncc.edu'):
-          return render_template('signup.html', error='Username should end with "@uncc.edu"')
+          return render_template('signup.html', error='Signup with UNCC credentials"')
          # Validate the password (for example, you might require a certain length or complexity)
         if len(password) < 8:
             return render_template('signup.html', error='Password should be at least 8 characters long')
@@ -107,7 +118,7 @@ def settingProfile():
    last_name = request.form.get('last_name')
    account_repository_singleton.updatingMajor(user_id, user_major, first_name, last_name)
 #    return redirect("/")
-   return render_template("profileIndex.html")
+   return redirect("/profileIndex")
    
 
 @app.route('/major')
@@ -121,30 +132,50 @@ def general():
     return render_template('general.html')
 
 @app.get('/ComputerScience')
+@authentication
 def compSci():
-    print('testing')
-    return render_template('compSci_Forum.html')
-
+     user = account_repository_singleton.getUser(session['user_id'])
+     post = account_repository_singleton.get_posts()
+     return render_template('compSci_Forum.html',user=user, forums=post)
+ 
 
 @app.post('/ComputerScience')
 def display():
+    
     message = request.form.get('question-input')
     # print(message) testing if message is holding the text input
-    account_repository_singleton.add_post(message)
-    return render_template('compSci_Forum.html')
+    username=session['user_id']
+    user = account_repository_singleton.get_user_id(username)
+    account_repository_singleton.add_post(message,user.first_name)
+    return redirect('/ComputerScience')
 
-@app.route('/authentication', methods=['POST'])
-def authentication():
-    return render_template('authentication.html')
+@app.get('/like/<id>')
+def likepost(id):
+    post = account_repository_singleton.getpost(id)
+    print(post.likelist)
+    if session['user_id'] not in post.likelist:
+      post.likelist.append(session['user_id'])
+      post.message_likes += 1
+      db.session.commit()
+    return redirect('/ComputerScience')
 
-
-
+@app.get('/dislike/<id>')
+def dislikepost(id):
+    post = account_repository_singleton.getpost(id)
+    if session['user_id'] not in post.dislikelist:
+      post.dislikelist.append(session['user_id'])
+      post.message_dislikes += 1
+      db.session.commit()
+    
+    return redirect('/ComputerScience')
 @app.route('/business_Forum', methods=['GET', 'POST'])
+@authentication
 def business_forum():
+    user = account_repository_singleton.getUser(session['user_id'])
     if request.method == 'POST':
         message = request.form['question-input']
         account_repository_singleton.add_post(message)
-        return redirect(url_for('business_forum'))
+        return redirect(url_for('business_forum', user=user))
     else:
         posts = set(account_repository_singleton.get_posts())
     return render_template('business_Forum.html', posts=posts)
@@ -154,5 +185,28 @@ def submit():
     message = request.form.get('question-input')
     account_repository_singleton.add_post(message)
     return redirect(url_for('business_forum'))
+@app.get('/logout')
+def logout():
+    del session['user_id']
+    return redirect('/')
 
-
+@app.get('/groups')
+def groups():
+    #user_id = request.form.get('user_id')
+  
+    if 'user_id' not in session:
+        return redirect('/')
+    user_id = session['user_id']
+    user_major = account_repository_singleton.getMajor(user_id)
+    print(user_major)
+    if user_major == 'Computer Science':
+        return redirect('/ComputerScience')
+    #elif user_major == 'Biology':
+        return redirect('/general')
+    #elif user_major == 'Engineering':
+        return render_template('hist_groups.html')
+    elif user_major == 'Business':
+        return redirect('/business_Forum')
+    else:
+        # Handle unknown major or no major
+        return redirect('/general')

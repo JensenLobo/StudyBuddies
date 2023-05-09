@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -32,6 +33,7 @@ class compsci(db.Model):
     message_dislikes = db.Column(db.Integer, nullable=True)
     dislikelist = db.Column(db.ARRAY(db.Integer), nullable=True, default=[])
     likelist = db.Column(db.ARRAY(db.Integer), nullable=True, default=[])
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
     def __init__(self, forum_message,username):
@@ -45,3 +47,5 @@ class compsci(db.Model):
    
     def post_info(self) -> str:
         return f'Post ID: {self.post_id}, Post Statement: {self.forum_message}'
+    
+

@@ -227,3 +227,18 @@ def delete_account():
     session.pop('user_id')
     return redirect('/')
 
+@app.route('/update/<int:id>', methods=['POST'])
+def update_post(id):
+    account = users.query.get(session['user_id'])
+    post = account_repository_singleton.get_comp_id(id)
+    #post = compsci.query.get(post_id)
+    if post is not None and post.useremail == account.username:
+        forum_message = request.form.get('question-input')
+        post.forum_message = forum_message
+        db.session.commit()
+        return redirect('/ComputerScience')
+    return redirect('/')
+
+    
+
+    

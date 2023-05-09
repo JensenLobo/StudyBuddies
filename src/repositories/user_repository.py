@@ -54,8 +54,9 @@ class AccountRepository:
       db.session.commit()
       return post.post_id
    
-   def get_comp_id():
-         return compsci.post_id
+   def get_comp_id(self, post_id):
+         user = compsci.query.filter_by(post_id=post_id).first()
+         return user
 
    def get_posts(self):
       posts =  compsci.query.order_by(compsci.created_at.asc()).all()

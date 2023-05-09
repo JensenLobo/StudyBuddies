@@ -211,3 +211,11 @@ def groups():
     else:
         # Handle unknown major or no major
         return redirect('/general')
+  
+@app.post('/deleteaccount')
+def delete_account():
+    account = users.query.get(session['user_id'])
+    db.session.delete(account)
+    db.session.commit()
+    session.pop('user_id')
+    return redirect('/')

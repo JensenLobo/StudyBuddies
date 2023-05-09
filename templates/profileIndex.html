@@ -30,9 +30,18 @@
           </li>
         </ul>
       </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <form action="/deleteaccount" method="post">
+              <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
-  {% block heading %} <h1 class="heading-padding">Hi {{user.first_name}} {{user.last_name}} Welcome to StudyBuddies!</h1> {% endblock %} 
+  <h1>Hi {{user.first_name}} {{user.last_name}} welcome to StudyBuddies!</h1>
   <div class="container pt-4">
     {% block body %}{% endblock %}
   </div>

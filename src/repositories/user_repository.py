@@ -48,8 +48,8 @@ class AccountRepository:
    def get_user_id(self, id):
       user = users.query.filter_by(id=id).first()
       return user
-   def add_post(self, forum_message, username):
-      post = compsci(forum_message, username)
+   def add_post(self, forum_message, username,user):
+      post = compsci(forum_message, username,user)
       db.session.add(post)
       db.session.commit()
       return post.post_id

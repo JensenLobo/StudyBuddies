@@ -28,6 +28,7 @@ class users(db.Model):
 class compsci(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
+    useremail = db.Column(db.String(255), nullable=False)
     forum_message = db.Column(db.String(255), nullable=False)
     message_likes = db.Column(db.Integer, nullable=True)
     message_dislikes = db.Column(db.Integer, nullable=True)
@@ -36,8 +37,9 @@ class compsci(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-    def __init__(self, forum_message,username):
+    def __init__(self, forum_message,username,useremail):
         self.username = username
+        self.useremail = useremail
         self.forum_message = forum_message
         self.message_likes = 0
         self.message_dislikes = 0

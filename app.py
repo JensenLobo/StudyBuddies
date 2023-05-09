@@ -146,7 +146,7 @@ def display():
     # print(message) testing if message is holding the text input
     username=session['user_id']
     user = account_repository_singleton.get_user_id(username)
-    account_repository_singleton.add_post(message,user.first_name)
+    account_repository_singleton.add_post(message,user.first_name,user.username)
     return redirect('/ComputerScience')
 
 @app.get('/like/<id>')
@@ -212,10 +212,18 @@ def groups():
         # Handle unknown major or no major
         return redirect('/general')
   
-@app.post('/deleteaccount')
+@app.route('/deleteaccount', methods=['POST'])
 def delete_account():
     account = users.query.get(session['user_id'])
+    useremail = account.username
+    print(useremail)
+    if account.major == "Computer Science":
+        user = compsci.query.filter_by(useremail=useremail).all()
+        for u in user:
+         db.session.delete(u)
+       
     db.session.delete(account)
     db.session.commit()
     session.pop('user_id')
     return redirect('/')
+

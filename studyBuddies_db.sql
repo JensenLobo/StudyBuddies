@@ -12,6 +12,7 @@ CREATE TABLE users (
 CREATE TABLE compsci (
     post_id SERIAL PRIMARY KEY,
     username VARCHAR(255)  NOT NULL,
+    useremail VARCHAR(255)  NOT NULL,
     forum_message VARCHAR(255) NOT NULL,
     message_likes INTEGER DEFAULT 0,
     message_dislikes INTEGER DEFAULT 0,

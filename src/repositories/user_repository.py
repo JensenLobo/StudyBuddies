@@ -58,7 +58,7 @@ class AccountRepository:
          return compsci.post_id
 
    def get_posts(self):
-      posts =  compsci.query.all()
+      posts =  compsci.query.order_by(compsci.created_at.asc()).all()
       return posts
 
    def __init__(self):

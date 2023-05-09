@@ -1,15 +1,17 @@
-{% extends '_layout.html' %}
+{% extends 'profileIndex.html' %}
 {% block title %}Computer Science Forum{% endblock %}
 
+{% block heading %} <h1 class="heading-padding">Computer Science Discussion Page</h1> {% endblock %}
 {% block body %}
-<h1>Computer Science Discussion Page</h1>
+
 {% for post in forums %}
-<div class="container-fluid mt-100">
+<div class="container-fluid mt-100" id="{{ post.post_id }}">
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
                         <div class="media-body ml-3"> <a>{{post.username}}</a>
+                          <p class="top-right-corner">Created at: {{ post.created_at }}</p>
                         </div>
                 </div>
                 <div class="card-body">
@@ -31,6 +33,7 @@
 </div>
 {% endfor%}
 
+
 <style>
     form {
       background-color: #f2f2f2;
@@ -38,7 +41,7 @@
       border-radius: 10px;
       margin-bottom: 20px;
       bottom: 0;
-      position: fixed;
+      position: relative;
       width: 77%;
       height: 200px;
     }
@@ -73,12 +76,14 @@
     }
 </style>
 
-<ul id="question-list"></ul>
-<form id="question-form" method="post" action="{{ url_for('display') }}">
-  <label for="question-input">Enter your question:</label>
-  <textarea type="text" name="question-input"></textarea>
-  <button type="submit">Submit</button>
-</form>
+<footer>
+  <form id="question-form" method="post" action="{{ url_for('display') }}">
+    <label for="question-input">Enter your question:</label>
+    <textarea type="text" name="question-input"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</footer>
+
 
 
 {% endblock %}

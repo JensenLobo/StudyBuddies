@@ -40,3 +40,15 @@ img {
         margin-top: 120px;
     }
 }
+
+h1.heading-padding {
+    padding-left: 10px;
+}
+
+p.top-right-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+}

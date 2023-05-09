@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 #from your_database_module import db, User
 from werkzeug.security import generate_password_hash
-from src.models import db, users
+from src.models import db, users, compsci
 from src.repositories.user_repository import account_repository_singleton
 from src.security import bcrypt
 from dotenv import load_dotenv
@@ -168,6 +168,7 @@ def dislikepost(id):
       db.session.commit()
     
     return redirect('/ComputerScience')
+
 @app.route('/business_Forum', methods=['GET', 'POST'])
 @authentication
 def business_forum():

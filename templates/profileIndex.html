@@ -32,7 +32,7 @@
       </div>
     </div>
   </nav>
-  <h1>Hi {{user.first_name}} {{user.last_name}} welcome to StudyBuddies!</h1>
+  {% block heading %} <h1 class="heading-padding">Hi {{user.first_name}} {{user.last_name}} Welcome to StudyBuddies!</h1> {% endblock %} 
   <div class="container pt-4">
     {% block body %}{% endblock %}
   </div>

@@ -16,7 +16,8 @@ CREATE TABLE compsci (
     message_likes INTEGER DEFAULT 0,
     message_dislikes INTEGER DEFAULT 0,
     likelist VARCHAR(255)[],
-    dislikelist VARCHAR(255)[]
+    dislikelist VARCHAR(255)[],
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 

@@ -22,13 +22,39 @@
 
                     <div class="px-4 pt-3">
                       
-                      <a class="btn btn-info" href="/like/{{post.post_id}}">Like ({{post.message_likes}})</a>
-                      <a class="btn btn-info" href="/dislike/{{post.post_id}}">Dislike ({{post.message_dislikes}})</a>
-                      <form action="{{ url_for('update_post', id=post.post_id) }}" method="post">
+                      <a class="btn btn-info" href="/like/{{post.post_id}}">LIKE ({{post.likes}})</a>
+                      <a class="btn btn-info" href="/dislike/{{post.post_id}}">DISLIKE ({{post.dislikes}})</a>
+                      <!--<form action="editMessage.html" method="get">
                         <textarea type="text" name="question-input"></textarea>
                         <button type="submit" class="btn btn-warning">Edit</button>
-                      </form>
-                      
+                        href="/updated?id={{ post.post_id }}" from line 33
+                      </form>-->
+                      {% if post.can_edit %}
+                      <!--<a class="btn btn-warning" href="/updated?id={{ post.post_id }}">Edit</a>-->
+                      <!--<div class="openBtn">
+                        <button class="btn btn-warning" onclick="openForm()">EDIT</button>
+                      </div>-->
+                      <button class="btn btn-warning" onclick="openForm()">EDIT</button>
+                      <div class="loginPopup">
+                        <div class="formPopup" id="popupForm">
+                          <form action="{{ url_for('update_post', id = post.post_id )}}" method="POST" class="formContainer">
+                            <h2>Edit your Message</h2>
+                            <label for="question-input">Enter your question:</label>
+                            <textarea type="text" name="question-input"></textarea>
+                            <button type="submit" class="btn">Submit</button>
+                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                      <script>
+                        function openForm() {
+                          document.getElementById("popupForm").style.display = "block";
+                        }
+                        function closeForm() {
+                          document.getElementById("popupForm").style.display = "none";
+                        }
+                      </script>
+                      {% endif %}
                         
                     </div>
                 </div>
@@ -40,7 +66,7 @@
 
 
 <style>
-    form {
+    form.layout {
       background-color: #f2f2f2;
       padding: 20px;
       border-radius: 10px;
@@ -82,13 +108,11 @@
 </style>
 
 <footer>
-  <form id="question-form" method="post" action="{{ url_for('display') }}">
+  <form class="layout" id="question-form" method="post" action="{{ url_for('display') }}">
     <label for="question-input">Enter your question:</label>
     <textarea type="text" name="question-input"></textarea>
     <button type="submit">Submit</button>
   </form>
 </footer>
-
-
 
 {% endblock %}

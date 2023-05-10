@@ -30,19 +30,15 @@ class compsci(db.Model):
     username = db.Column(db.String(255), nullable=False)
     useremail = db.Column(db.String(255), nullable=False)
     forum_message = db.Column(db.String(255), nullable=False)
-    message_likes = db.Column(db.Integer, nullable=True)
-    message_dislikes = db.Column(db.Integer, nullable=True)
-    dislikelist = db.Column(db.ARRAY(db.Integer), nullable=True, default=[])
-    likelist = db.Column(db.ARRAY(db.Integer), nullable=True, default=[])
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
 
     def __init__(self, forum_message,username,useremail):
         self.username = username
         self.useremail = useremail
         self.forum_message = forum_message
-        self.message_likes = 0
-        self.message_dislikes = 0
+
+    def get_id(self):
+        return self.post_id        
 
     def __repr__(self):
         return self
@@ -50,4 +46,24 @@ class compsci(db.Model):
     def post_info(self) -> str:
         return f'Post ID: {self.post_id}, Post Statement: {self.forum_message}'
     
+    def set_likes(self, likes):
+        self.likes = likes
+
+    def set_dislike(self, dislike):
+        self.dislikes = dislike
+
+    def set_can_edit(self, can_edit):
+        self.can_edit = can_edit
+
+class post_likes_compsci(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, user_id, post_id, rating):
+        self.user_id = user_id
+        self.post_id = post_id
+        self.rating = rating
 

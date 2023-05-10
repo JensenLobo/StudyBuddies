@@ -10,17 +10,22 @@ CREATE TABLE users (
     );
 
 CREATE TABLE compsci (
-    post_id SERIAL PRIMARY KEY,
-    username VARCHAR(255)  NOT NULL,
-    useremail VARCHAR(255)  NOT NULL,
-    forum_message VARCHAR(255) NOT NULL,
-    message_likes INTEGER DEFAULT 0,
-    message_dislikes INTEGER DEFAULT 0,
-    likelist VARCHAR(255)[],
-    dislikelist VARCHAR(255)[],
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+        post_id SERIAL PRIMARY KEY,
+        username VARCHAR(255)  NOT NULL,
+        useremail VARCHAR(255)  NOT NULL,
+        forum_message VARCHAR(255) NOT NULL,
+        message_likes INTEGER DEFAULT 0,
+        message_dislikes INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 
+CREATE TABLE post_likes_compsci (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id),
+        post_id INTEGER REFERENCES compsci(post_id),
+        rating VARCHAR(255)  DEFAULT 'unknown',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    );
 
 -- Table for general form page
 CREATE TABLE post (

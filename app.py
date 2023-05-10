@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 #from your_database_module import db, User
 from werkzeug.security import generate_password_hash
-from src.models import db, users, compsci
+from src.models import db, users, compsci, post_likes_compsci
 from src.repositories.user_repository import account_repository_singleton
 from src.security import bcrypt
 from dotenv import load_dotenv
@@ -47,9 +47,6 @@ def profileIndex():
     user = account_repository_singleton.getUser(session['user_id'])
     return render_template('profileIndex.html', user=user)
 
-
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -77,7 +74,6 @@ def login():
 def signup():
     return render_template('signup.html')
 
-
 @app.post('/signup')
 def create_account():
         username = request.form['username']
@@ -103,9 +99,6 @@ def create_account():
 
         return redirect(url_for('getProfile', user_id = result))
 
-
-        
-
 @app.get("/profile")
 def getProfile():
     return render_template("creatingProfile.html")
@@ -120,11 +113,9 @@ def settingProfile():
 #    return redirect("/")
    return redirect("/profileIndex")
    
-
 @app.route('/major')
 def major():
     return render_template('major.html')
-
 
 # Genreal page for all users to see
 @app.route('/general')
@@ -136,9 +127,14 @@ def general():
 def compSci():
      user = account_repository_singleton.getUser(session['user_id'])
      post = account_repository_singleton.get_posts()
+     for item in post:
+         post_id = item.get_id()
+         item.set_likes(account_repository_singleton.count_rating(post_id, "like"))
+         item.set_dislike(account_repository_singleton.count_rating(post_id, "dislike"))
+         can_edit = item.useremail == user.username
+         item.set_can_edit(can_edit)
      return render_template('compSci_Forum.html',user=user, forums=post)
  
-
 @app.post('/ComputerScience')
 def display():
     
@@ -151,22 +147,16 @@ def display():
 
 @app.get('/like/<id>')
 def likepost(id):
-    post = account_repository_singleton.getpost(id)
-    print(post.likelist)
-    if session['user_id'] not in post.likelist:
-      post.likelist.append(session['user_id'])
-      post.message_likes += 1
-      db.session.commit()
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_id(id).get_id()
+    account_repository_singleton.add_rating(user_id, post_id, "like")
     return redirect('/ComputerScience')
 
 @app.get('/dislike/<id>')
 def dislikepost(id):
-    post = account_repository_singleton.getpost(id)
-    if session['user_id'] not in post.dislikelist:
-      post.dislikelist.append(session['user_id'])
-      post.message_dislikes += 1
-      db.session.commit()
-    
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_id(id).get_id()
+    account_repository_singleton.add_rating(user_id, post_id, "dislike")
     return redirect('/ComputerScience')
 
 @app.route('/business_Forum', methods=['GET', 'POST'])
@@ -216,16 +206,32 @@ def groups():
 def delete_account():
     account = users.query.get(session['user_id'])
     useremail = account.username
-    print(useremail)
+    print(account.id)
     if account.major == "Computer Science":
-        user = compsci.query.filter_by(useremail=useremail).all()
-        for u in user:
-         db.session.delete(u)
+        
+        posts = compsci.query.filter_by(useremail=useremail).all()
+        for post in posts:
+         post_rating = post_likes_compsci.query.filter_by(post_id=post.post_id).all()
+         for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+
+         db.session.delete(post)
+         db.session.commit()
        
     db.session.delete(account)
     db.session.commit()
     session.pop('user_id')
     return redirect('/')
+
+@app.get('/updated')
+def edit_post():
+    post_id = request.args.get('id')
+    account = users.query.get(session['user_id'])
+    post = account_repository_singleton.get_comp_id(post_id)
+    if post.useremail == account.username:
+        return render_template('editMessage.html', post=post)
+    return redirect('/ComputerScience')
 
 @app.route('/update/<int:id>', methods=['POST'])
 def update_post(id):

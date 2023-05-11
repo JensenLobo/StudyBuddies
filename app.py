@@ -60,11 +60,13 @@ def login():
         user = existing_user.id
         if existing_user.major == 'No major':
             session['user_id'] = existing_user.id
-            return redirect(url_for('getProfile', id=user))
+            return redirect(url_for('getProfile', user_id=user))
         
         session['user_id'] = existing_user.id
+        flash("You have logged in successfully.")
         return redirect('/profileIndex')
     if session.get('user_id') and request.path == '/login':
+        flash("You're already logged in.")
         return redirect('/profileIndex')   
     else:
         return render_template('login.html')
@@ -97,6 +99,7 @@ def create_account():
         result = account_repository_singleton.create_account(username.lower(), hashed_password)
         if result == False:
             return render_template('signup.html', error='Username is already in use')
+        flash("Successfully Created The Account.")
         return redirect('/')
 
 @app.get("/profile")
@@ -104,6 +107,7 @@ def create_account():
 def getProfile():
         user = account_repository_singleton.getUser(session['user_id'])
         if users.query.filter_by(id=user.id).first().major_changed_count >= 2:
+            flash("You already changed your major twice.", category="error")
             return redirect("/profileIndex")
         return render_template("creatingProfile.html", user=user)
     
@@ -119,6 +123,7 @@ def settingProfile():
    users.query.filter_by(id=user.id).first().major_changed_count += 1
    db.session.commit()
 #    return redirect("/")
+   flash("Successfully changed major.")
    return redirect("/profileIndex")
    
 @app.get('/ComputerScience')
@@ -318,7 +323,12 @@ def dislikepostgen(id):
 
 @app.get('/logout')
 def logout():
-    del session['user_id']
+    try:
+        del session['user_id']
+        flash("Successfully logged out.")
+    except KeyError:
+        flash("You need to be logged in", category="error")
+
     return redirect('/')
 
 @app.get('/groups')
@@ -348,7 +358,11 @@ def delete_account():
     posts = generalform.query.filter_by(useremail=useremail).all()
     for post in posts:
          post_rating = post_likes_general.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_general.query.filter_by(post_id=post.post_id).all()
          for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+         for rating in other_post_rating:
              db.session.delete(rating)
              db.session.commit()
          db.session.delete(post)
@@ -358,8 +372,11 @@ def delete_account():
         posts = compsci.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_compsci.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_compsci.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
-             print(rating)
              db.session.delete(rating)
              db.session.commit()
          db.session.delete(post)
@@ -369,6 +386,10 @@ def delete_account():
         posts = biology.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_biology.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_biology.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
@@ -379,6 +400,10 @@ def delete_account():
         posts = business.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_business.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_business.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
@@ -389,6 +414,10 @@ def delete_account():
         posts = engineering.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_engineer.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_engineer.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
@@ -398,6 +427,7 @@ def delete_account():
     db.session.delete(account)
     db.session.commit()
     session.pop('user_id')
+    flash("Successfully deleted the account.")
     return redirect('/')
 
 @app.get('/updated')

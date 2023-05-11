@@ -11,7 +11,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                         <div class="media-body ml-3"> <a>{{post.username}}</a>
-                          <p class="top-right-corner">Created at: {{ post.created_at }}</p>
+                          <p class="top-right-corner">Created at: <strong>{{ post.created_at|datetimeformat("%Y-%m-%d %I:%M:%S %p") }}</strong></p>
                         </div>
                 </div>
                 <div class="card-body">

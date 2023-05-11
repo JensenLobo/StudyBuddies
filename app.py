@@ -28,18 +28,14 @@ def authentication(fun):
   def wrapper(*args,**kwargs):
        if 'user_id' in session:
            return fun(*args,**kwargs)
-       
        return redirect(url_for('index'))
   return wrapper
-
-
 
 @app.route('/')
 def index():
     if session.get('user_id') and request.path != "/logout":
         return redirect('/profileIndex')
     return render_template('about.html')
-
 
 @app.get('/profileIndex')
 @authentication
@@ -52,7 +48,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
          # Check if the username is already in use
         if not username or not password:
          return render_template('login.html', error= "Invalid username or password")
@@ -66,17 +61,19 @@ def login():
         if existing_user.major == 'No major':
             session['user_id'] = existing_user.id
             return redirect(url_for('getProfile', id=user))
-       
+        
         session['user_id'] = existing_user.id
         return redirect('/profileIndex')
     if session.get('user_id') and request.path == '/login':
-        return redirect('/profileIndex')
-    
+        return redirect('/profileIndex')   
     else:
         return render_template('login.html')
-
+    
 @app.get('/signup')
 def signup():
+    if session.get('user_id'):
+        # User is already logged in, redirect to profile page
+        return redirect('/profileIndex')
     return render_template('signup.html')
 
 @app.post('/signup')
@@ -84,7 +81,6 @@ def create_account():
         username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-
        # return render_template('login.html')
        # Check if the passwords match
         if password != confirm_password:
@@ -101,7 +97,6 @@ def create_account():
         result = account_repository_singleton.create_account(username.lower(), hashed_password)
         if result == False:
             return render_template('signup.html', error='Username is already in use')
-
         return redirect('/')
 
 @app.get("/profile")
@@ -112,7 +107,6 @@ def getProfile():
             return redirect("/profileIndex")
         return render_template("creatingProfile.html", user=user)
     
-
 @app.post("/profile")
 @authentication
 def settingProfile():
@@ -127,7 +121,6 @@ def settingProfile():
 #    return redirect("/")
    return redirect("/profileIndex")
    
-
 @app.get('/ComputerScience')
 @authentication
 def compSci():
@@ -144,7 +137,6 @@ def compSci():
 @app.post('/ComputerScience')
 @authentication
 def display():
-    
     message = request.form.get('question-input')
     # print(message) testing if message is holding the text input
     username=session['user_id']
@@ -167,7 +159,6 @@ def dislikepost(id):
     post_id = account_repository_singleton.get_comp_id(id).get_id()
     account_repository_singleton.add_rating(user_id, post_id, "dislike")
     return redirect('/ComputerScience')
-
 
 @app.get('/biology')
 @authentication
@@ -208,8 +199,6 @@ def dislikepostbio(id):
     account_repository_singleton.add_ratingbio(user_id, post_id, "dislike")
     return redirect('/biology')
 
-
-
 @app.get('/business')
 @authentication
 def busness():
@@ -222,7 +211,6 @@ def busness():
          can_edit = item.useremail == user.username
          item.set_can_edit(can_edit)
      return render_template('business_Forum.html',user=user, forums=post)
-
 
 @app.post('/business')
 @authentication
@@ -250,7 +238,6 @@ def dislikepostbus(id):
     account_repository_singleton.add_ratingbus(user_id, post_id, "dislike")
     return redirect('/business')
 
-
 @app.get('/engineer')
 @authentication
 def engineer():
@@ -263,7 +250,6 @@ def engineer():
          can_edit = item.useremail == user.username
          item.set_can_edit(can_edit)
      return render_template('engineering_forum.html',user=user, forums=post)
-
 
 @app.post('/engineer')
 @authentication
@@ -291,7 +277,6 @@ def dislikeposteng(id):
     account_repository_singleton.add_ratingeng(user_id, post_id, "dislike")
     return redirect('/engineer')
 
-
 @app.get('/general')
 @authentication
 def general():
@@ -305,7 +290,6 @@ def general():
          item.set_can_edit(can_edit)
      return render_template('general.html',user=user, forums=post)
 
-
 @app.post('/general')
 @authentication
 def displaygen():
@@ -315,7 +299,6 @@ def displaygen():
     user = account_repository_singleton.get_user_id(username)
     account_repository_singleton.add_postgen(message,user.first_name,user.username)
     return redirect('/general')
-
 
 @app.get('/likegen/<id>')
 @authentication
@@ -333,7 +316,6 @@ def dislikepostgen(id):
     account_repository_singleton.add_ratinggen(user_id, post_id, "dislike")
     return redirect('/general')
 
-
 @app.get('/logout')
 def logout():
     del session['user_id']
@@ -341,8 +323,6 @@ def logout():
 
 @app.get('/groups')
 def groups():
-    #user_id = request.form.get('user_id')
-  
     if 'user_id' not in session:
         return redirect('/')
     user_id = session['user_id']
@@ -476,7 +456,3 @@ def update_postgen(id):
              post.forum_message = forum_message
              db.session.commit()
              return redirect('/general')
- 
-    
-
-    

@@ -16,33 +16,30 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!--<div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
             <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/groups">Your Groups</a>
-          </li>
+            <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/general">General Form</a>
+            <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/profile?user_id={{user.id}}">Change Major</a>
         </ul>
-      </div>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!--</div>-->
+      <div class="collapse navbar-collapse top-nav-right" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/logout">Sign Out</a>
           </li>
         </ul>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/profile?user_id={{user.id}}">Change Major</a>
-            </li>
-          </ul>
       </div>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link{% if list_movies_active %} active{% endif %}" href="/general">General Form</a>
-          </li>
-        </ul>
+      
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Delete Account</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Delete Account</a>
+        </div>
       </div>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -54,7 +51,9 @@
       </div>
     </div>
   </nav>
-  {%block heading %}<h1>Hi {{user.first_name}} {{user.last_name}} welcome to StudyBuddies!</h1> {% endblock %}
+  {%block heading %}
+    <h1>Hi {{user.first_name}} {{user.last_name}} welcome to StudyBuddies!</h1>
+  {% endblock %}
   <div class="container pt-4">
     {% block body %}{% endblock %}
   </div>

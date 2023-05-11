@@ -113,3 +113,8 @@ p.top-right-corner {
   .openButton:hover {
     opacity: 1;
   }
+
+  .top-nav-right {
+    float: right
+    
+  }

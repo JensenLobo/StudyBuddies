@@ -373,7 +373,7 @@ def delete_account():
          db.session.delete(post)
          db.session.commit() 
 
-    if account.major == "Computer Science":
+    if True:
         posts = compsci.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_compsci.query.filter_by(user_id=user_id).all()
@@ -387,7 +387,7 @@ def delete_account():
          db.session.delete(post)
          db.session.commit()
    
-    elif account.major == "Biology":
+    if True:
         posts = biology.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_biology.query.filter_by(user_id=user_id).all()
@@ -401,7 +401,7 @@ def delete_account():
          db.session.delete(post)
          db.session.commit()
    
-    elif account.major == "Business":
+    if True:
         posts = business.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_business.query.filter_by(user_id=user_id).all()
@@ -415,7 +415,7 @@ def delete_account():
          db.session.delete(post)
          db.session.commit()
     
-    elif account.major == "Engineering":
+    if True:
         posts = engineering.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_engineer.query.filter_by(user_id=user_id).all()

@@ -4,6 +4,7 @@ from src.models import db, users, compsci, post_likes_compsci, biology, post_lik
 from src.repositories.user_repository import account_repository_singleton
 from src.security import bcrypt
 from dotenv import load_dotenv
+import datetime
 import os
 import functools
 load_dotenv()
@@ -126,6 +127,10 @@ def settingProfile():
    flash("Successfully changed major.")
    return redirect("/profileIndex")
    
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format="%Y-%m-%d %H:%M:%S"):
+    return value.strftime(format)
+
 @app.get('/ComputerScience')
 @authentication
 def compSci():
@@ -137,6 +142,7 @@ def compSci():
          item.set_dislike(account_repository_singleton.count_rating(post_id, "dislike"))
          can_edit = item.useremail == user.username
          item.set_can_edit(can_edit)
+
      return render_template('compSci_Forum.html',user=user, forums=post)
  
 @app.post('/ComputerScience')

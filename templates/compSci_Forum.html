@@ -34,7 +34,7 @@
                       <!--<div class="openBtn">
                         <button class="btn btn-warning" onclick="openForm()">EDIT</button>
                       </div>-->
-                      <button class="btn btn-warning" onclick="openForm({{ post.post_id }})">EDIT</button>
+                      <button class="btn btn-warning" onclick="openForm({{post.post_id}})">EDIT</button>
                       <div class="loginPopup">
                         <div class="formPopup" id="popupForm">
                           <form action="{{ url_for('update_post', id = post.post_id )}}" method="POST" class="formContainer">
@@ -74,7 +74,7 @@
       margin-bottom: 20px;
       bottom: 0;
       position: relative;
-      width: 77%;
+      width: 100%;
       height: 200px;
     }
     

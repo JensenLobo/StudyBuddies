@@ -22,8 +22,8 @@
 
                     <div class="px-4 pt-3">
                       
-                      <a class="btn btn-info" href="/like/{{post.post_id}}">LIKE ({{post.likes}})</a>
-                      <a class="btn btn-info" href="/dislike/{{post.post_id}}">DISLIKE ({{post.dislikes}})</a>
+                      <a class="btn btn-success" href="/like/{{post.post_id}}">LIKE <i class="fa-regular fa-thumbs-up"></i> ({{post.likes}})</a>
+                      <a class="btn btn-danger" href="/dislike/{{post.post_id}}">DISLIKE <i class="fa-regular fa-thumbs-down"></i> ({{post.dislikes}})</a>
                       <!--<form action="editMessage.html" method="get">
                         <textarea type="text" name="question-input"></textarea>
                         <button type="submit" class="btn btn-warning">Edit</button>
@@ -34,7 +34,7 @@
                       <!--<div class="openBtn">
                         <button class="btn btn-warning" onclick="openForm()">EDIT</button>
                       </div>-->
-                      <button class="btn btn-warning" onclick="openForm({{post.post_id}})">EDIT</button>
+                      <button class="btn btn-warning" onclick="openForm({{post.post_id}})">EDIT <i class="fa-regular fa-pen-to-square"></i> </button>
                       <div class="loginPopup">
                         <div class="formPopup" id="popupForm">
                           <form action="{{ url_for('update_post', id = post.post_id )}}" method="POST" class="formContainer">

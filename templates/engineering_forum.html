@@ -1,15 +1,79 @@
-{% extends '_layout.html' %}
-{% block title %}General{% endblock %}
+{% extends 'profileIndex.html' %}
+{% block title %}Engineering Forum{% endblock %}
 
+{% block heading %} <h1 class="heading-padding">Engineering Discussion Page</h1> {% endblock %}
 {% block body %}
+
+{% for post in forums %}
+<div class="container-fluid mt-100" id="{{ post.post_id }}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                        <div class="media-body ml-3"> <a>{{post.username}}</a>
+                          <p class="top-right-corner">Created at: {{ post.created_at }}</p>
+                        </div>
+                </div>
+                <div class="card-body">
+                    <p name="display-text">{{post.forum_message}}
+                    </p>
+                </div>
+                <div class="card-footer d-flex flex-wrap justify-content-between align-items-center px-0 pt-0 pb-3">
+
+                    <div class="px-4 pt-3">
+                      
+                      <a class="btn btn-info" href="/likeeng/{{post.post_id}}">LIKE ({{post.likes}})</a>
+                      <a class="btn btn-info" href="/dislikeeng/{{post.post_id}}">DISLIKE ({{post.dislikes}})</a>
+                      <!--<form action="editMessage.html" method="get">
+                        <textarea type="text" name="question-input"></textarea>
+                        <button type="submit" class="btn btn-warning">Edit</button>
+                        href="/updated?id={{ post.post_id }}" from line 33
+                      </form>-->
+                      {% if post.can_edit %}
+                      <!--<a class="btn btn-warning" href="/updated?id={{ post.post_id }}">Edit</a>-->
+                      <!--<div class="openBtn">
+                        <button class="btn btn-warning" onclick="openForm()">EDIT</button>
+                      </div>-->
+                      <button class="btn btn-warning" onclick="openForm({{ post.post_id }})">EDIT</button>
+                      <div class="loginPopup">
+                        <div class="formPopup" id="popupForm">
+                          <form action="{{ url_for('update_post', id = post.post_id )}}" method="POST" class="formContainer">
+                            <h2>Edit your Message</h2>
+                            <label for="question-input">Enter your question:</label>
+                            <textarea type="text" name="question-input"></textarea>
+                            <button type="submit" class="btn">Submit</button>
+                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                      <script>
+                        function openForm(id) {
+                          document.getElementById("popupForm").style.display = "block";
+                          document.getElementById("popupForm").querySelector("form").action="/update/"+id
+                        }
+                        function closeForm() {
+                          document.getElementById("popupForm").style.display = "none";
+                        }
+                      </script>
+                      {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor%}
+
+
 <style>
-    form {
+    form.layout {
       background-color: #f2f2f2;
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
       bottom: 0;
-      position: fixed;
+      position: relative;
       width: 77%;
       height: 200px;
     }
@@ -38,16 +102,18 @@
       padding: 0;
       margin: 0;
     }
-
+    
+    li {
+      margin-bottom: 10px;
+    }
 </style>
 
-<h1>Engineering Discussion Page</h1>
-
-<ul id="question-list"></ul>
-<form id="question-form">
+<footer>
+  <form class="layout" id="question-form" method="post" action="{{ url_for('displayeng') }}">
     <label for="question-input">Enter your question:</label>
-    <textarea id="question-input"></textarea>
+    <textarea type="text" name="question-input"></textarea>
     <button type="submit">Submit</button>
-</form>
+  </form>
+</footer>
 
 {% endblock %}

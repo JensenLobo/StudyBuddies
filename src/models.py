@@ -3,6 +3,7 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+# This is the model for the users table in the database.
 class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
@@ -12,7 +13,7 @@ class users(db.Model):
     last_name = db.Column(db.String(255), default="No last", nullable=True)
     major_changed_count = db.Column(db.Integer, default=0)
 
-
+    # This is the constructor for the users model.
     def __init__(self, username, password_hash, major='No major', first_name='No first', last_name='No last', major_changed_count=0):
         self.username = username
         self.password_hash = (password_hash)
@@ -21,13 +22,15 @@ class users(db.Model):
         self.last_name = last_name
         self.major_changed_count = major_changed_count
 
-
+    # This function is used to get the id of the user.
     def __repr__(self):
         return self
     
+    # This function is used to get the id of the user.
     def user_info(self) -> str:
         return f'<Account ID: {self.id}, Username: {self.username}'
 
+# This is the model for the posts table in the database.
 class compsci(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -58,6 +61,7 @@ class compsci(db.Model):
     def set_can_edit(self, can_edit):
         self.can_edit = can_edit
 
+# This is the model for the post_likes table in the database.
 class post_likes_compsci(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, primary_key=True)
@@ -69,6 +73,8 @@ class post_likes_compsci(db.Model):
         self.user_id = user_id
         self.post_id = post_id
         self.rating = rating
+
+# This is the model for the posts table in the database.
 class biology(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -99,6 +105,7 @@ class biology(db.Model):
     def set_can_edit(self, can_edit):
         self.can_edit = can_edit
 
+# This is the model for the post_likes table in the database.
 class post_likes_biology(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, primary_key=True)
@@ -112,6 +119,7 @@ class post_likes_biology(db.Model):
         self.rating = rating
 
 
+# This is the model for the posts table in the database.
 class business(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -142,6 +150,7 @@ class business(db.Model):
     def set_can_edit(self, can_edit):
         self.can_edit = can_edit
 
+# This is the model for the post_likes table in the database.
 class post_likes_business(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, primary_key=True)
@@ -155,6 +164,7 @@ class post_likes_business(db.Model):
         self.rating = rating
 
 
+# This is the model for the posts table in the database.
 class engineering(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -185,6 +195,7 @@ class engineering(db.Model):
     def set_can_edit(self, can_edit):
         self.can_edit = can_edit
 
+# This is the model for the post_likes table in the database.
 class post_likes_engineer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, primary_key=True)
@@ -198,6 +209,7 @@ class post_likes_engineer(db.Model):
         self.rating = rating
 
 
+# This is the model for the posts table in the database.
 class generalform(db.Model):
     post_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
@@ -228,6 +240,7 @@ class generalform(db.Model):
     def set_can_edit(self, can_edit):
         self.can_edit = can_edit
 
+# This is the model for the post_likes table in the database.
 class post_likes_general(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, primary_key=True)

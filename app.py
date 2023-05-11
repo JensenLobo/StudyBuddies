@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 #from your_database_module import db, User
-from werkzeug.security import generate_password_hash
-from src.models import db, users, compsci, post_likes_compsci
+from src.models import db, users, compsci, post_likes_compsci, biology, post_likes_biology, business, post_likes_business, engineering, post_likes_engineer, generalform, post_likes_general
 from src.repositories.user_repository import account_repository_singleton
 from src.security import bcrypt
 from dotenv import load_dotenv
@@ -33,8 +32,7 @@ def authentication(fun):
        return redirect(url_for('index'))
   return wrapper
 
-def hash_password(password):
-    return generate_password_hash(password)
+
 
 @app.route('/')
 def index():
@@ -101,15 +99,23 @@ def create_account():
 
 @app.get("/profile")
 def getProfile():
-    return render_template("creatingProfile.html")
+        user = account_repository_singleton.getUser(session['user_id'])
+        if users.query.filter_by(id=user.id).first().major_changed_count >= 2:
+            return redirect("/profileIndex")
+        return render_template("creatingProfile.html", user=user)
+    
 
 @app.post("/profile")
+@authentication
 def settingProfile():
+   user = account_repository_singleton.getUser(session['user_id'])
    user_major = request.form.get('major')
    user_id = request.form.get('user_id')
    first_name = request.form.get('first_name')
    last_name = request.form.get('last_name')
    account_repository_singleton.updatingMajor(user_id, user_major, first_name, last_name)
+   users.query.filter_by(id=user.id).first().major_changed_count += 1
+   db.session.commit()
 #    return redirect("/")
    return redirect("/profileIndex")
    
@@ -117,10 +123,8 @@ def settingProfile():
 def major():
     return render_template('major.html')
 
-# Genreal page for all users to see
-@app.route('/general')
-def general():
-    return render_template('general.html')
+
+
 
 @app.get('/ComputerScience')
 @authentication
@@ -136,6 +140,7 @@ def compSci():
      return render_template('compSci_Forum.html',user=user, forums=post)
  
 @app.post('/ComputerScience')
+@authentication
 def display():
     
     message = request.form.get('question-input')
@@ -146,6 +151,7 @@ def display():
     return redirect('/ComputerScience')
 
 @app.get('/like/<id>')
+@authentication
 def likepost(id):
     user_id = session['user_id']
     post_id = account_repository_singleton.get_comp_id(id).get_id()
@@ -153,29 +159,179 @@ def likepost(id):
     return redirect('/ComputerScience')
 
 @app.get('/dislike/<id>')
+@authentication
 def dislikepost(id):
     user_id = session['user_id']
     post_id = account_repository_singleton.get_comp_id(id).get_id()
     account_repository_singleton.add_rating(user_id, post_id, "dislike")
     return redirect('/ComputerScience')
 
-@app.route('/business_Forum', methods=['GET', 'POST'])
-@authentication
-def business_forum():
-    user = account_repository_singleton.getUser(session['user_id'])
-    if request.method == 'POST':
-        message = request.form['question-input']
-        account_repository_singleton.add_post(message)
-        return redirect(url_for('business_forum', user=user))
-    else:
-        posts = set(account_repository_singleton.get_posts())
-    return render_template('business_Forum.html', posts=posts)
 
-@app.route('/submit', methods=['GET', 'POST'])
-def submit():
+@app.get('/biology')
+@authentication
+def biologyy():
+     user = account_repository_singleton.getUser(session['user_id'])
+     post = account_repository_singleton.get_postsbio()
+     for item in post:
+         post_id = item.get_id()
+         item.set_likes(account_repository_singleton.count_ratingbio(post_id, "like"))
+         item.set_dislike(account_repository_singleton.count_ratingbio(post_id, "dislike"))
+         can_edit = item.useremail == user.username
+         item.set_can_edit(can_edit)
+     return render_template('biology_Form.html',user=user, forums=post)
+
+@app.post('/biology')
+@authentication
+def displaybio():
     message = request.form.get('question-input')
-    account_repository_singleton.add_post(message)
-    return redirect(url_for('business_forum'))
+    # print(message) testing if message is holding the text input
+    username=session['user_id']
+    user = account_repository_singleton.get_user_id(username)
+    account_repository_singleton.add_postbio(message,user.first_name,user.username)
+    return redirect('/biology')
+
+@app.get('/likebio/<id>')
+@authentication
+def likepostbio(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idbio(id).get_id()
+    account_repository_singleton.add_ratingbio(user_id, post_id, "like")
+    return redirect('/biology')
+
+@app.get('/dislikebio/<id>')
+@authentication
+def dislikepostbio(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idbio(id).get_id()
+    account_repository_singleton.add_ratingbio(user_id, post_id, "dislike")
+    return redirect('/biology')
+
+
+
+@app.get('/business')
+@authentication
+def busness():
+     user = account_repository_singleton.getUser(session['user_id'])
+     post = account_repository_singleton.get_postsbus()
+     for item in post:
+         post_id = item.get_id()
+         item.set_likes(account_repository_singleton.count_ratingbus(post_id, "like"))
+         item.set_dislike(account_repository_singleton.count_ratingbus(post_id, "dislike"))
+         can_edit = item.useremail == user.username
+         item.set_can_edit(can_edit)
+     return render_template('business_Forum.html',user=user, forums=post)
+
+
+@app.post('/business')
+@authentication
+def displaybus():
+    message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
+    username=session['user_id']
+    user = account_repository_singleton.get_user_id(username)
+    account_repository_singleton.add_postbus(message,user.first_name,user.username)
+    return redirect('/business')
+
+@app.get('/likebus/<id>')
+@authentication
+def likepostbus(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idbus(id).get_id()
+    account_repository_singleton.add_ratingbus(user_id, post_id, "like")
+    return redirect('/business')
+
+@app.get('/dislikebus/<id>')
+@authentication
+def dislikepostbus(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idbus(id).get_id()
+    account_repository_singleton.add_ratingbus(user_id, post_id, "dislike")
+    return redirect('/business')
+
+
+@app.get('/engineer')
+@authentication
+def engineer():
+     user = account_repository_singleton.getUser(session['user_id'])
+     post = account_repository_singleton.get_postseng()
+     for item in post:
+         post_id = item.get_id()
+         item.set_likes(account_repository_singleton.count_ratingeng(post_id, "like"))
+         item.set_dislike(account_repository_singleton.count_ratingeng(post_id, "dislike"))
+         can_edit = item.useremail == user.username
+         item.set_can_edit(can_edit)
+     return render_template('engineering_forum.html',user=user, forums=post)
+
+
+@app.post('/engineer')
+@authentication
+def displayeng():
+    message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
+    username=session['user_id']
+    user = account_repository_singleton.get_user_id(username)
+    account_repository_singleton.add_posteng(message,user.first_name,user.username)
+    return redirect('/engineer')
+
+@app.get('/likeeng/<id>')
+@authentication
+def likeposteng(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_ideng(id).get_id()
+    account_repository_singleton.add_ratingeng(user_id, post_id, "like")
+    return redirect('/engineer')
+
+@app.get('/dislikeeng/<id>')
+@authentication
+def dislikeposteng(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_ideng(id).get_id()
+    account_repository_singleton.add_ratingeng(user_id, post_id, "dislike")
+    return redirect('/engineer')
+
+
+@app.get('/general')
+@authentication
+def general():
+     user = account_repository_singleton.getUser(session['user_id'])
+     post = account_repository_singleton.get_postsgen()
+     for item in post:
+         post_id = item.get_id()
+         item.set_likes(account_repository_singleton.count_ratinggen(post_id, "like"))
+         item.set_dislike(account_repository_singleton.count_ratinggen(post_id, "dislike"))
+         can_edit = item.useremail == user.username
+         item.set_can_edit(can_edit)
+     return render_template('general.html',user=user, forums=post)
+
+
+@app.post('/general')
+@authentication
+def displaygen():
+    message = request.form.get('question-input')
+    # print(message) testing if message is holding the text input
+    username=session['user_id']
+    user = account_repository_singleton.get_user_id(username)
+    account_repository_singleton.add_postgen(message,user.first_name,user.username)
+    return redirect('/general')
+
+
+@app.get('/likegen/<id>')
+@authentication
+def likepostgen(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idgen(id).get_id()
+    account_repository_singleton.add_ratinggen(user_id, post_id, "like")
+    return redirect('/general')
+
+@app.get('/dislikegen/<id>')
+@authentication
+def dislikepostgen(id):
+    user_id = session['user_id']
+    post_id = account_repository_singleton.get_comp_idgen(id).get_id()
+    account_repository_singleton.add_ratinggen(user_id, post_id, "dislike")
+    return redirect('/general')
+
+
 @app.get('/logout')
 def logout():
     del session['user_id']
@@ -192,33 +348,71 @@ def groups():
     print(user_major)
     if user_major == 'Computer Science':
         return redirect('/ComputerScience')
-    #elif user_major == 'Biology':
-        return redirect('/general')
-    #elif user_major == 'Engineering':
-        return render_template('hist_groups.html')
+    elif user_major == 'Biology':
+        return redirect('/biology')
+    elif user_major == 'Engineering':
+        return redirect('/engineer')
     elif user_major == 'Business':
-        return redirect('/business_Forum')
+        return redirect('/business')
     else:
         # Handle unknown major or no major
-        return redirect('/general')
+        return redirect('/profileIndex')
   
 @app.route('/deleteaccount', methods=['POST'])
 def delete_account():
     account = users.query.get(session['user_id'])
     useremail = account.username
-    print(account.id)
-    if account.major == "Computer Science":
-        
-        posts = compsci.query.filter_by(useremail=useremail).all()
-        for post in posts:
-         post_rating = post_likes_compsci.query.filter_by(post_id=post.post_id).all()
+    user_id = account.id
+    posts = generalform.query.filter_by(useremail=useremail).all()
+    for post in posts:
+         post_rating = post_likes_general.query.filter_by(user_id=user_id).all()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
-
+         db.session.delete(post)
+         db.session.commit() 
+         
+    if account.major == "Computer Science":
+        posts = compsci.query.filter_by(useremail=useremail).all()
+        for post in posts:
+         post_rating = post_likes_compsci.query.filter_by(user_id=user_id).all()
+         for rating in post_rating:
+             print(rating)
+             db.session.delete(rating)
+             db.session.commit()
          db.session.delete(post)
          db.session.commit()
-       
+   
+    elif account.major == "Biology":
+        posts = biology.query.filter_by(useremail=useremail).all()
+        for post in posts:
+         post_rating = post_likes_biology.query.filter_by(user_id=user_id).all()
+         for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+         db.session.delete(post)
+         db.session.commit()
+   
+    elif account.major == "Business":
+        posts = business.query.filter_by(useremail=useremail).all()
+        for post in posts:
+         post_rating = post_likes_business.query.filter_by(user_id=user_id).all()
+         for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+         db.session.delete(post)
+         db.session.commit()
+    
+    elif account.major == "Engineering":
+        posts = engineering.query.filter_by(useremail=useremail).all()
+        for post in posts:
+         post_rating = post_likes_engineer.query.filter_by(user_id=user_id).all()
+         for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+         db.session.delete(post)
+         db.session.commit()
+     
     db.session.delete(account)
     db.session.commit()
     session.pop('user_id')
@@ -236,15 +430,51 @@ def edit_post():
 @app.route('/update/<int:id>', methods=['POST'])
 def update_post(id):
     account = users.query.get(session['user_id'])
-    post = account_repository_singleton.get_comp_id(id)
+    if account.major == "Computer Science":
+        post = account_repository_singleton.get_comp_id(id)
     #post = compsci.query.get(post_id)
-    if post is not None and post.useremail == account.username:
-        forum_message = request.form.get('question-input')
-        post.forum_message = forum_message
-        db.session.commit()
-        return redirect('/ComputerScience')
+        if post is not None and post.useremail == account.username:
+             forum_message = request.form.get('question-input')
+             post.forum_message = forum_message
+             db.session.commit()
+             return redirect('/ComputerScience')
+    elif account.major == "Biology":
+        post = account_repository_singleton.get_comp_idbio(id)
+        if post is not None and post.useremail == account.username:
+             forum_message = request.form.get('question-input')
+             post.forum_message = forum_message
+             db.session.commit()
+             return redirect('/biology')
+    elif account.major == "Business":
+        post = account_repository_singleton.get_comp_idbus(id)
+        if post is not None and post.useremail == account.username:
+             forum_message = request.form.get('question-input')
+             post.forum_message = forum_message
+             db.session.commit()
+             return redirect('/business')
+    
+    elif account.major == "Engineering":
+        post = account_repository_singleton.get_comp_ideng(id)
+        if post is not None and post.useremail == account.username:
+             forum_message = request.form.get('question-input')
+             post.forum_message = forum_message
+             db.session.commit()
+             return redirect('/engineer')
+    else:
+        return redirect('/profileIndex')
+
     return redirect('/')
 
+@app.route('/updategen/<int:id>', methods=['POST'])
+def update_postgen(id):
+     account = users.query.get(session['user_id'])
+     post = account_repository_singleton.get_comp_idgen(id)
+     if post is not None and post.useremail == account.username:
+             forum_message = request.form.get('question-input')
+             post.forum_message = forum_message
+             db.session.commit()
+             return redirect('/general')
+ 
     
 
     

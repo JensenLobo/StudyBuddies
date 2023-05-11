@@ -60,7 +60,7 @@ def login():
         user = existing_user.id
         if existing_user.major == 'No major':
             session['user_id'] = existing_user.id
-            return redirect(url_for('getProfile', id=user))
+            return redirect(url_for('getProfile', user_id=user))
         
         session['user_id'] = existing_user.id
         return redirect('/profileIndex')
@@ -348,7 +348,11 @@ def delete_account():
     posts = generalform.query.filter_by(useremail=useremail).all()
     for post in posts:
          post_rating = post_likes_general.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_general.query.filter_by(post_id=post.post_id).all()
          for rating in post_rating:
+             db.session.delete(rating)
+             db.session.commit()
+         for rating in other_post_rating:
              db.session.delete(rating)
              db.session.commit()
          db.session.delete(post)
@@ -358,8 +362,11 @@ def delete_account():
         posts = compsci.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_compsci.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_compsci.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
-             print(rating)
              db.session.delete(rating)
              db.session.commit()
          db.session.delete(post)
@@ -369,6 +376,10 @@ def delete_account():
         posts = biology.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_biology.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_biology.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
@@ -379,6 +390,10 @@ def delete_account():
         posts = business.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_business.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_business.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()
@@ -389,6 +404,10 @@ def delete_account():
         posts = engineering.query.filter_by(useremail=useremail).all()
         for post in posts:
          post_rating = post_likes_engineer.query.filter_by(user_id=user_id).all()
+         other_post_rating = post_likes_engineer.query.filter_by(post_id=post.post_id).all()
+         for rating in other_post_rating:
+             db.session.delete(rating)
+             db.session.commit()
          for rating in post_rating:
              db.session.delete(rating)
              db.session.commit()

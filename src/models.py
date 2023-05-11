@@ -13,10 +13,13 @@ class users(db.Model):
     major_changed_count = db.Column(db.Integer, default=0)
 
 
-    def __init__(self, username, password_hash):
+    def __init__(self, username, password_hash, major='No major', first_name='No first', last_name='No last', major_changed_count=0):
         self.username = username
         self.password_hash = (password_hash)
-        self.major = "No major"
+        self.major = major
+        self.first_name = first_name
+        self.last_name = last_name
+        self.major_changed_count = major_changed_count
 
 
     def __repr__(self):

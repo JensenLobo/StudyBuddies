@@ -1,8 +1,10 @@
 .right{
     float: right;
+    margin-right: 10px;
 }
 h1 img {
-    float:left;margin:0 5px 0 0
+    float:left;
+    margin:0 5px 0 0;
 }
 .indent{
     text-indent: 25px;
@@ -117,4 +119,14 @@ p.top-right-corner {
   .top-nav-right {
     float: right
     
+  }
+
+  .title-pages {
+    text-indent: 10px;
+    margin-top: 5px;
+    text-align: left;
+  }
+
+  .formAdjust {
+    margin-top: 5px;
   }

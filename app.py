@@ -36,6 +36,8 @@ def authentication(fun):
 
 @app.route('/')
 def index():
+    if session.get('user_id') and request.path != "/logout":
+        return redirect('/profileIndex')
     return render_template('about.html')
 
 
@@ -60,11 +62,16 @@ def login():
         if not bcrypt.check_password_hash(existing_user.password_hash, password):
             return render_template('/login.html', error = "Wrong password")
        # user = account_repository_singleton.getUser(existing_user.id)
-
+        user = existing_user.id
+        if existing_user.major == 'No major':
+            session['user_id'] = existing_user.id
+            return redirect(url_for('getProfile', id=user))
        
         session['user_id'] = existing_user.id
         return redirect('/profileIndex')
-
+    if session.get('user_id') and request.path == '/login':
+        return redirect('/profileIndex')
+    
     else:
         return render_template('login.html')
 
@@ -95,9 +102,10 @@ def create_account():
         if result == False:
             return render_template('signup.html', error='Username is already in use')
 
-        return redirect(url_for('getProfile', user_id = result))
+        return redirect('/')
 
 @app.get("/profile")
+@authentication
 def getProfile():
         user = account_repository_singleton.getUser(session['user_id'])
         if users.query.filter_by(id=user.id).first().major_changed_count >= 2:
@@ -119,12 +127,6 @@ def settingProfile():
 #    return redirect("/")
    return redirect("/profileIndex")
    
-@app.route('/major')
-def major():
-    return render_template('major.html')
-
-
-
 
 @app.get('/ComputerScience')
 @authentication
@@ -371,7 +373,7 @@ def delete_account():
              db.session.commit()
          db.session.delete(post)
          db.session.commit() 
-         
+
     if account.major == "Computer Science":
         posts = compsci.query.filter_by(useremail=useremail).all()
         for post in posts:
